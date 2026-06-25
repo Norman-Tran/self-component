@@ -44,7 +44,8 @@ const variantMap: Record<
 };
 
 export interface ButtonProps
-  extends Omit<React.ComponentProps<typeof UiButton>, 'size' | 'variant'>,
+  extends
+    Omit<React.ComponentProps<typeof UiButton>, 'size' | 'variant'>,
     VariantProps<typeof dsButtonVariants> {
   size?: SizeType;
   variant?: VariantType;
@@ -53,13 +54,7 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      className,
-      size = DEFAULT_SIZE,
-      variant = 'solid',
-      'data-testid': dataTestId,
-      ...props
-    },
+    { className, size = DEFAULT_SIZE, variant = 'solid', 'data-testid': dataTestId, ...props },
     ref,
   ) => {
     return (

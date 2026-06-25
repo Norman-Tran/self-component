@@ -8,9 +8,11 @@ description: Scaffold a new public component in self-component following the 3-l
 ## Workflow
 
 1. **Primitive needed?** Run from repo root:
+
    ```bash
    npm run ui:add -- <shadcn-name>
    ```
+
    Skip if primitive already exists in `src/ui/`.
 
 2. **Create wrapper** at `src/components/<name>.tsx`:
@@ -19,6 +21,7 @@ description: Scaffold a new public component in self-component following the 3-l
    - `data-testid`, label/error for form controls
 
 3. **Export** in `src/index.ts`:
+
    ```ts
    export { MyComponent } from './components/my-component';
    export type { MyComponentProps } from './components/my-component';

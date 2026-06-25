@@ -1,0 +1,8 @@
+branch="$(git symbolic-ref --short HEAD 2>/dev/null)"
+
+if [ "$branch" = "main" ]; then
+  echo "❌ Không commit trực tiếp trên nhánh main."
+  echo "   Phát triển trên feature/fix → PR vào dev → PR dev vào main."
+  echo "   Tạo nhánh: git checkout dev && git checkout -b feature/mo-ta"
+  exit 1
+fi

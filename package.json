@@ -23,7 +23,13 @@
     "lint": "eslint src preview",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "ui:add": "npx shadcn@latest add"
+    "ui:add": "npx shadcn@latest add",
+    "changeset": "changeset add",
+    "changeset:empty": "changeset add --empty",
+    "version": "changeset version",
+    "changeset:status": "changeset status --since=origin/dev",
+    "changeset:status:main": "changeset status --since=origin/main",
+    "prepare": "husky"
   },
   "peerDependencies": {
     "@radix-ui/react-dialog": "^1.1.0",
@@ -40,6 +46,9 @@
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-popover": "^1.1.6",
@@ -53,6 +62,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
     "eslint": "^9.21.0",
+    "husky": "^9.1.7",
     "lucide-react": "^0.475.0",
     "postcss": "^8.4.49",
     "prettier": "^3.5.0",

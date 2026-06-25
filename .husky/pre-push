@@ -1,0 +1,8 @@
+while read local_ref local_sha remote_ref remote_sha
+do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "❌ Không push trực tiếp lên origin/main."
+    echo "   Merge dev vào main qua Pull Request."
+    exit 1
+  fi
+done

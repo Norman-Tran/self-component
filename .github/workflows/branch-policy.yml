@@ -1,0 +1,42 @@
+name: Branch policy
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: branch-policy-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR source branch
+        env:
+          TARGET: ${{ github.base_ref }}
+          SOURCE: ${{ github.head_ref }}
+        run: |
+          echo "PR: $SOURCE → $TARGET"
+
+          if [ "$TARGET" = "main" ]; then
+            if [ "$SOURCE" = "dev" ] || [ "$SOURCE" = "changeset-release/main" ]; then
+              echo "✓ Nguồn hợp lệ cho main"
+              exit 0
+            fi
+            echo "::error::PR vào main chỉ được phép từ nhánh dev (hoặc changeset-release/main từ bot release)."
+            exit 1
+          fi
+
+          if [ "$TARGET" = "dev" ]; then
+            case "$SOURCE" in
+              feature/*|fix/*|docs/*|chore/*|refactor/*)
+                echo "✓ Nguồn hợp lệ cho dev"
+                exit 0
+              ;;
+              *)
+                echo "::error::PR vào dev chỉ được phép từ feature/*, fix/*, docs/*, chore/*, refactor/*."
+                exit 1
+              ;;
+            esac
+          fi

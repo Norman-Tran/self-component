@@ -52,7 +52,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         />
         {(errorMessage || hint) && (
           <p
-            className={cn('text-xs', error || errorMessage ? 'text-destructive' : 'text-muted-foreground')}
+            className={cn(
+              'text-xs',
+              error || errorMessage ? 'text-destructive' : 'text-muted-foreground',
+            )}
           >
             {error ? errorMessage : hint}
           </p>

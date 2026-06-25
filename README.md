@@ -1,69 +1,69 @@
 # self-component
 
-Thư viện React component cá nhân, xây trên [shadcn/ui](https://ui.shadcn.com) với kiến trúc 3 lớp gọn và dễ mở rộng.
+A personal React component library built on [shadcn/ui](https://ui.shadcn.com) with a clean, extensible three-layer architecture.
 
-## Mục tiêu
+## Goals
 
-- Sở hữu toàn bộ source (fork shadcn primitives, không phụ thuộc npm package shadcn)
-- Tách rõ **primitives** (`ui/`) và **design system** (`components/`)
-- Hỗ trợ **shadcn CLI** để thêm primitive mới nhanh chóng
-- Publish qua GitHub để tái sử dụng ở nhiều dự án
+- Own the full source (fork shadcn primitives, no dependency on an npm shadcn package)
+- Separate **primitives** (`ui/`) from the **design system** (`components/`)
+- Support the **shadcn CLI** for adding new primitives quickly
+- Publish via GitHub for reuse across projects
 
-## Cấu trúc source
+## Source structure
 
 ```text
 self-component/
-├── components.json          # Cấu hình shadcn CLI (aliases, tailwind, style)
+├── components.json          # shadcn CLI config (aliases, tailwind, style)
 ├── package.json             # Scripts, exports, peerDependencies
 ├── tailwind.config.ts       # Tailwind content paths
-├── tsconfig.json            # TypeScript cho dev + preview
+├── tsconfig.json            # TypeScript for dev + preview
 ├── tsconfig.build.json      # Build library → dist/
 ├── vite.config.ts           # Preview app (root: preview/)
-├── preview/                 # App demo nội bộ, không publish
+├── preview/                 # Internal demo app, not published
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.html
 └── src/
-    ├── index.ts             # Public API — chỉ export components/
+    ├── index.ts             # Public API — exports components/ only
     ├── lib/
     │   ├── utils.ts         # cn() helper
     │   └── tokens.ts        # Design tokens (size, variant)
     ├── styles/
     │   └── globals.css      # CSS variables + Tailwind v4
-    ├── ui/                  # Lớp 1: shadcn primitives (nội bộ)
+    ├── ui/                  # Layer 1: shadcn primitives (internal)
     │   ├── button.tsx
     │   ├── input.tsx
     │   ├── popover.tsx
     │   ├── command.tsx
     │   └── label.tsx
-    ├── components/          # Lớp 2: design system (public)
+    ├── components/          # Layer 2: design system (public)
     │   ├── button.tsx
     │   ├── input.tsx
     │   └── combobox.tsx
-    └── hooks/               # Custom hooks (dành cho shadcn CLI alias)
+    └── hooks/               # Custom hooks (shadcn CLI alias)
 ```
 
-### Quy tắc tổ chức code
+### Code organization rules
 
-| Lớp | Thư mục | Trách nhiệm | Export ra ngoài? |
-| --- | --- | --- | --- |
-| Primitives | `src/ui/` | Radix + Tailwind, styling cơ bản | Không |
-| Design system | `src/components/` | API sử dụng, label, validation, controlled state | Có (`src/index.ts`) |
-| Preview | `preview/` | Demo và phát triển trực quan | Không |
+| Layer         | Directory         | Responsibility                                    | Exported?            |
+| ------------- | ----------------- | ------------------------------------------------- | -------------------- |
+| Primitives    | `src/ui/`         | Radix + Tailwind, base styling                    | No                   |
+| Design system | `src/components/` | Consumer API, label, validation, controlled state | Yes (`src/index.ts`) |
+| Preview       | `preview/`        | Demo and visual development                       | No                   |
 
-**Nguyên tắc clean code:**
+**Clean code principles:**
 
-1. Không thêm business logic vào `src/ui/`
-2. Mỗi component public nằm trong một file ở `src/components/`
-3. Chỉ export qua `src/index.ts`
-4. Thêm primitive mới bằng shadcn CLI, không copy thủ công nếu có thể
+1. Do not add business logic to `src/ui/`
+2. Each public component lives in one file under `src/components/`
+3. Export only through `src/index.ts`
+4. Add new primitives via shadcn CLI when possible, avoid manual copy
 
-## Yêu cầu
+## Requirements
 
 - Node.js 20+
-- npm hoặc yarn
+- npm or yarn
 
-## Clone và phát triển
+## Clone and develop
 
 ```bash
 git clone https://github.com/<username>/self-component.git
@@ -72,33 +72,37 @@ npm install
 npm run dev
 ```
 
-Mở trình duyệt tại địa chỉ Vite in ra (thường là `http://localhost:5173`).
+Open the URL Vite prints (usually `http://localhost:5173`).
 
 ### Scripts
 
-| Script | Mô tả |
-| --- | --- |
-| `npm run dev` | Chạy preview app |
-| `npm run build` | Build library vào `dist/` |
-| `npm run build:clean` | Xóa `dist/` rồi build lại |
-| `npm run ui:add -- <name>` | Thêm shadcn primitive vào `src/ui/` |
-| `npm run format` | Format code với Prettier |
+| Script                          | Description                           |
+| ------------------------------- | ------------------------------------- |
+| `npm run dev`                   | Run preview app                       |
+| `npm run build`                 | Build library to `dist/`              |
+| `npm run build:clean`           | Remove `dist/` then rebuild           |
+| `npm run ui:add -- <name>`      | Add shadcn primitive to `src/ui/`     |
+| `npm run format`                | Format code with Prettier             |
+| `npm run changeset`             | Create a changeset for the changelog  |
+| `npm run changeset:empty`       | Empty changeset (docs/CI, no release) |
+| `npm run changeset:status`      | Check missing changesets (vs `dev`)   |
+| `npm run changeset:status:main` | Check before PR `dev` → `main`        |
 
-## Thêm component shadcn bằng CLI
+## Add shadcn components via CLI
 
-Repo đã cấu hình `components.json` với alias:
+`components.json` is configured with aliases:
 
 - `@/ui` → `src/ui`
 - `@/components` → `src/components`
 - `@/lib/utils` → `src/lib/utils`
 
-Ví dụ thêm Dialog:
+Example — add Dialog:
 
 ```bash
 npm run ui:add -- dialog
 ```
 
-Sau đó tạo wrapper ở `src/components/dialog.tsx` nếu cần API riêng, rồi export trong `src/index.ts`.
+Then create a wrapper at `src/components/dialog.tsx` if you need a custom API, and export it in `src/index.ts`.
 
 ## Build library
 
@@ -110,40 +114,40 @@ Output:
 
 - `dist/index.js` — ESM bundle
 - `dist/index.d.ts` — TypeScript types
-- `src/styles/globals.css` — stylesheet (import trực tiếp)
+- `src/styles/globals.css` — stylesheet (import directly)
 
-## Cài vào dự án khác
+## Install in another project
 
-### Cách 1: Cài từ GitHub (khuyến nghị)
+### Option 1: Install from GitHub (recommended)
 
-Push repo lên GitHub, rồi trong dự án consumer:
+Push the repo to GitHub, then in the consumer project:
 
 ```bash
 npm install github:<username>/self-component#main
 ```
 
-Hoặc với tag/release:
+Or with a tag/release:
 
 ```bash
 npm install github:<username>/self-component#v0.1.0
 ```
 
-### Cách 2: npm link (phát triển local)
+### Option 2: npm link (local development)
 
-Trong repo `self-component`:
+In `self-component`:
 
 ```bash
 npm run build
 npm link
 ```
 
-Trong dự án consumer:
+In the consumer project:
 
 ```bash
 npm link self-component
 ```
 
-### Cách 3: file path (monorepo / local)
+### Option 3: file path (monorepo / local)
 
 ```json
 {
@@ -153,9 +157,9 @@ npm link self-component
 }
 ```
 
-## Tích hợp vào dự án React
+## Integrate into a React project
 
-### 1. Cài peer dependencies
+### 1. Install peer dependencies
 
 ```bash
 npm install react react-dom tailwindcss @tailwindcss/postcss \
@@ -163,38 +167,35 @@ npm install react react-dom tailwindcss @tailwindcss/postcss \
   class-variance-authority clsx tailwind-merge cmdk lucide-react
 ```
 
-(Cài thêm Radix package tương ứng khi bạn thêm component mới.)
+(Install additional Radix packages when you add new components.)
 
 ### 2. Import CSS
 
-Trong entry file của app (ví dụ `main.tsx`):
+In your app entry file (e.g. `main.tsx`):
 
 ```tsx
 import 'self-component/styles.css';
 ```
 
-### 3. Cấu hình Tailwind
+### 3. Configure Tailwind
 
-Đảm bảo Tailwind quét source của thư viện:
+Ensure Tailwind scans the library source:
 
 ```ts
 // tailwind.config.ts
 export default {
-  content: [
-    './src/**/*.{ts,tsx}',
-    './node_modules/self-component/dist/**/*.{js,ts,tsx}',
-  ],
+  content: ['./src/**/*.{ts,tsx}', './node_modules/self-component/dist/**/*.{js,ts,tsx}'],
 };
 ```
 
-Với Tailwind v4, thêm `@source` nếu cần:
+For Tailwind v4, add `@source` if needed:
 
 ```css
 @import 'tailwindcss';
 @source "../node_modules/self-component/dist";
 ```
 
-### 4. Sử dụng component
+### 4. Use components
 
 ```tsx
 import { Button, Combobox, Input } from 'self-component';
@@ -202,8 +203,8 @@ import { Button, Combobox, Input } from 'self-component';
 export function Example() {
   return (
     <div className="space-y-4">
-      <Input label="Tên" placeholder="Nhập tên" />
-      <Button variant="solid">Lưu</Button>
+      <Input label="Name" placeholder="Enter name" />
+      <Button variant="solid">Save</Button>
       <Combobox
         items={[
           { label: 'Option A', value: 'a' },
@@ -216,34 +217,40 @@ export function Example() {
 }
 ```
 
-## Public API hiện tại
+## Current public API
 
-| Export | Mô tả |
-| --- | --- |
-| `Button` | Button design system (variant: solid, secondary, ghost, link) |
-| `Input` | Input có label, hint, error |
-| `Combobox` | Single select có search, controlled/uncontrolled |
-| `cn` | Utility merge class Tailwind |
-| `SizeType`, `VariantType` | Design tokens |
+| Export                    | Description                                                    |
+| ------------------------- | -------------------------------------------------------------- |
+| `Button`                  | Design system button (variants: solid, secondary, ghost, link) |
+| `Input`                   | Input with label, hint, and error                              |
+| `Combobox`                | Single select with search, controlled/uncontrolled             |
+| `cn`                      | Tailwind class merge utility                                   |
+| `SizeType`, `VariantType` | Design tokens                                                  |
 
-## Quy trình thêm component mới
+## Add a new component
 
-1. Thêm primitive: `npm run ui:add -- <component>`
-2. Tạo wrapper: `src/components/<name>.tsx`
+1. Add primitive: `npm run ui:add -- <component>`
+2. Create wrapper: `src/components/<name>.tsx`
 3. Export: `src/index.ts`
 4. Demo: `preview/App.tsx`
 5. Build: `npm run build`
 
-## So với 247-components-ui
+## Compared to 247-components-ui
 
-Cải tiến chính:
+Key improvements:
 
-- **Một namespace duy nhất** — không chia v1/v2 song song
-- **`ui/` vs `components/` rõ ràng** — tránh duplicate primitives
-- **Controlled API chuẩn** — Combobox hỗ trợ `value` / `onValueChange`
-- **README + folder README** — quy tắc từng lớp được ghi rõ
-- **Không phụ thuộc preset nội bộ** — dùng CSS variables chuẩn shadcn
+- **Single namespace** — no parallel v1/v2
+- **Clear `ui/` vs `components/` split** — avoids duplicate primitives
+- **Standard controlled API** — Combobox supports `value` / `onValueChange`
+- **README + per-folder README** — layer rules documented
+- **No internal preset dependency** — standard shadcn CSS variables
 
 ## License
 
 MIT
+
+## Contributing
+
+Git workflow (`feature/` / `fix/` → `dev` → `main`), PRs, and changelog: [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+Changelog: [CHANGELOG.md](./CHANGELOG.md).

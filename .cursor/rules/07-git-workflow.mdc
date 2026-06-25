@@ -1,0 +1,46 @@
+---
+description: Quy trình Git — dev / feature / fix / main
+alwaysApply: true
+---
+
+# Git Workflow
+
+**Không commit/push trực tiếp lên `main`.**
+
+## 3 tầng nhánh
+
+| Nhánh | Mục đích |
+| --- | --- |
+| `feature/<tên>` | Component/API mới → PR vào `dev` |
+| `fix/<tên>` | Sửa lỗi component có sẵn → PR vào `dev` |
+| `dev` | Tổng hợp commit, gom changeset/changelog → PR vào `main` |
+| `main` | Release ổn định |
+
+## Nhanh — component mới
+
+```bash
+git checkout dev && git pull
+git checkout -b feature/dialog
+npm run build
+npm run changeset
+git commit -m "feat(dialog): ..."
+git push -u origin feature/dialog
+# PR → dev
+```
+
+## Nhanh — sửa lỗi
+
+```bash
+git checkout dev && git pull
+git checkout -b fix/combobox-keyboard
+npm run changeset    # patch
+git commit -m "fix(combobox): ..."
+git push -u origin fix/combobox-keyboard
+# PR → dev
+```
+
+## Release
+
+PR `dev` → `main` khi sẵn sàng. Workflow Release trên `main` mở PR version + changelog.
+
+Chi tiết: `CONTRIBUTING.md`.
