@@ -21,18 +21,23 @@ preview/         → Demo app, không publish.
 
 ## Skills Cursor hữu ích
 
-| Skill | Khi dùng |
-| --- | --- |
-| `create-rule` | Thêm/sửa quy tắc trong `.cursor/rules/` |
-| `create-skill` | Tạo skill workflow riêng cho repo |
-| `review-bugbot` | Review diff trước khi merge |
-| `review-security` | Review bảo mật khi có form/auth |
+| Skill             | Khi dùng                                |
+| ----------------- | --------------------------------------- |
+| `create-rule`     | Thêm/sửa quy tắc trong `.cursor/rules/` |
+| `create-skill`    | Tạo skill workflow riêng cho repo       |
+| `review-bugbot`   | Review diff trước khi merge             |
+| `review-security` | Review bảo mật khi có form/auth         |
 
 ## Scripts
 
 - `npm run dev` — preview
 - `npm run build` — build library → `dist/`
 - `npm run ui:add -- <name>` — shadcn CLI
+- `npm run changeset` — tạo changeset (trước PR ảnh hưởng consumer)
+
+## Git
+
+`feature/` / `fix/` → PR `dev` → PR `main`. Không push `main`. Chi tiết: `CONTRIBUTING.md`.
 
 ## Không làm
 

@@ -42,14 +42,14 @@ self-component/
     │   └── combobox.tsx
     └── hooks/               # Custom hooks (dành cho shadcn CLI alias)
 ```
-
+ 
 ### Quy tắc tổ chức code
 
-| Lớp | Thư mục | Trách nhiệm | Export ra ngoài? |
-| --- | --- | --- | --- |
-| Primitives | `src/ui/` | Radix + Tailwind, styling cơ bản | Không |
+| Lớp           | Thư mục           | Trách nhiệm                                      | Export ra ngoài?    |
+| ------------- | ----------------- | ------------------------------------------------ | ------------------- |
+| Primitives    | `src/ui/`         | Radix + Tailwind, styling cơ bản                 | Không               |
 | Design system | `src/components/` | API sử dụng, label, validation, controlled state | Có (`src/index.ts`) |
-| Preview | `preview/` | Demo và phát triển trực quan | Không |
+| Preview       | `preview/`        | Demo và phát triển trực quan                     | Không               |
 
 **Nguyên tắc clean code:**
 
@@ -76,13 +76,16 @@ Mở trình duyệt tại địa chỉ Vite in ra (thường là `http://localho
 
 ### Scripts
 
-| Script | Mô tả |
-| --- | --- |
-| `npm run dev` | Chạy preview app |
-| `npm run build` | Build library vào `dist/` |
-| `npm run build:clean` | Xóa `dist/` rồi build lại |
+| Script                     | Mô tả                               |
+| -------------------------- | ----------------------------------- |
+| `npm run dev`              | Chạy preview app                    |
+| `npm run build`            | Build library vào `dist/`           |
+| `npm run build:clean`      | Xóa `dist/` rồi build lại           |
 | `npm run ui:add -- <name>` | Thêm shadcn primitive vào `src/ui/` |
-| `npm run format` | Format code với Prettier |
+| `npm run format`           | Format code với Prettier            |
+| `npm run changeset`              | Tạo changeset cho changelog              |
+| `npm run changeset:status`       | Kiểm tra thiếu changeset (so với `dev`)  |
+| `npm run changeset:status:main`  | Kiểm tra trước PR `dev` → `main`         |
 
 ## Thêm component shadcn bằng CLI
 
@@ -180,10 +183,7 @@ import 'self-component/styles.css';
 ```ts
 // tailwind.config.ts
 export default {
-  content: [
-    './src/**/*.{ts,tsx}',
-    './node_modules/self-component/dist/**/*.{js,ts,tsx}',
-  ],
+  content: ['./src/**/*.{ts,tsx}', './node_modules/self-component/dist/**/*.{js,ts,tsx}'],
 };
 ```
 
@@ -218,13 +218,13 @@ export function Example() {
 
 ## Public API hiện tại
 
-| Export | Mô tả |
-| --- | --- |
-| `Button` | Button design system (variant: solid, secondary, ghost, link) |
-| `Input` | Input có label, hint, error |
-| `Combobox` | Single select có search, controlled/uncontrolled |
-| `cn` | Utility merge class Tailwind |
-| `SizeType`, `VariantType` | Design tokens |
+| Export                    | Mô tả                                                         |
+| ------------------------- | ------------------------------------------------------------- |
+| `Button`                  | Button design system (variant: solid, secondary, ghost, link) |
+| `Input`                   | Input có label, hint, error                                   |
+| `Combobox`                | Single select có search, controlled/uncontrolled              |
+| `cn`                      | Utility merge class Tailwind                                  |
+| `SizeType`, `VariantType` | Design tokens                                                 |
 
 ## Quy trình thêm component mới
 
@@ -247,3 +247,9 @@ Cải tiến chính:
 ## License
 
 MIT
+
+## Đóng góp
+
+Quy trình Git (`feature/` / `fix/` → `dev` → `main`), PR và changelog: [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+Lịch sử thay đổi: [CHANGELOG.md](./CHANGELOG.md).

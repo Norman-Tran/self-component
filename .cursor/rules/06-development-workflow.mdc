@@ -38,5 +38,9 @@ npm install github:<user>/self-component#main
 
 ## Git
 
+- **3 tầng nhánh:** `feature/` / `fix/` → `dev` → `main` (xem `CONTRIBUTING.md`)
+- **Không commit/push trực tiếp lên `main`**
+- Changeset trên nhánh feature/fix trước khi PR vào `dev`
+- Commit theo Conventional Commits (`feat:`, `fix:`, …)
 - Chỉ commit khi user yêu cầu
 - Không commit secrets, `.env`
