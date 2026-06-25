@@ -1,14 +1,21 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+
+import { AdminLayout } from './layout/AdminLayout';
+import { ComponentDocPage } from './pages/ComponentDocPage';
+import { IntroductionPage } from './pages/IntroductionPage';
+import { PreviewPage } from './pages/PreviewPage';
+
 export default function App() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 p-8">
-      <header className="space-y-2">
-        <p className="text-sm font-medium text-muted-foreground">self-component preview</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Component playground</h1>
-        <p className="text-muted-foreground">
-          No public components yet. Add wrappers in <code className="text-sm">src/components/</code>{' '}
-          and demo them here.
-        </p>
-      </header>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AdminLayout />}>
+          <Route index element={<IntroductionPage />} />
+          <Route path="preview" element={<PreviewPage />} />
+          <Route path="components/:slug" element={<ComponentDocPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
