@@ -83,8 +83,9 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | `npm run build:clean`           | Remove `dist/` then rebuild          |
 | `npm run ui:add -- <name>`      | Add shadcn primitive to `src/ui/`    |
 | `npm run format`                | Format code with Prettier            |
-| `npm run changeset`             | Create a changeset for the changelog |
-| `npm run changeset:status`      | Check missing changesets (vs `dev`)  |
+| `npm run changeset`             | Create a changeset for the changelog     |
+| `npm run changeset:empty`       | Empty changeset (docs/CI, no release)    |
+| `npm run changeset:status`       | Check missing changesets (vs `dev`)      |
 | `npm run changeset:status:main` | Check before PR `dev` → `main`       |
 
 ## Add shadcn components via CLI

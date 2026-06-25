@@ -206,6 +206,8 @@ Requires peer dependency `@radix-ui/react-dialog`.
 - Changes only in `preview/`, docs, CI, Cursor rules
 - Internal refactor without changing `src/index.ts` exports
 
+Run `npm run changeset:empty` so CI `changeset` passes without a version bump.
+
 ### Local checks
 
 ```bash
@@ -234,6 +236,7 @@ Template: `.github/pull_request_template.md`.
 | Script                          | Description                                     |
 | ------------------------------- | ----------------------------------------------- |
 | `npm run changeset`             | Create a new changeset                          |
+| `npm run changeset:empty`       | Empty changeset (no version bump)               |
 | `npm run changeset:status`      | Check missing changesets vs `origin/dev`        |
 | `npm run changeset:status:main` | Check before PR `dev` → `main`                  |
 | `npm run version`               | Bump version + changelog (CI Release on `main`) |

@@ -1,9 +1,15 @@
 # Changesets
 
-Khi thay đổi code ảnh hưởng consumer, tạo changeset trên nhánh `feature/` hoặc `fix/` (trước khi PR vào `dev`):
+When a change affects consumers, create a changeset on a `feature/` or `fix/` branch **before** opening a PR into `dev`:
 
 ```bash
 npm run changeset
 ```
 
-Chọn `patch` / `minor` / `major` và mô tả chi tiết. Changeset tích lũy trên `dev` cho đến khi PR `dev` → `main` và workflow Release gộp changelog.
+Choose `patch` / `minor` / `major` and write a detailed summary. Changesets accumulate on `dev` until a `dev` → `main` PR and the Release workflow merge the changelog.
+
+For docs-only or internal changes with no consumer impact:
+
+```bash
+npm run changeset:empty
+```
