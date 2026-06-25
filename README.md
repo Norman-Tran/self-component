@@ -36,10 +36,7 @@ self-component/
     │   ├── popover.tsx
     │   ├── command.tsx
     │   └── label.tsx
-    ├── components/          # Layer 2: design system (public)
-    │   ├── button.tsx
-    │   ├── input.tsx
-    │   └── combobox.tsx
+    ├── components/          # Layer 2: design system (public) — add wrappers here
     └── hooks/               # Custom hooks (shadcn CLI alias)
 ```
 
@@ -198,34 +195,23 @@ For Tailwind v4, add `@source` if needed:
 ### 4. Use components
 
 ```tsx
-import { Button, Combobox, Input } from 'self-component';
+import { cn } from 'self-component';
 
 export function Example() {
-  return (
-    <div className="space-y-4">
-      <Input label="Name" placeholder="Enter name" />
-      <Button variant="solid">Save</Button>
-      <Combobox
-        items={[
-          { label: 'Option A', value: 'a' },
-          { label: 'Option B', value: 'b' },
-        ]}
-        onValueChange={(value) => console.log(value)}
-      />
-    </div>
-  );
+  return <div className={cn('p-4', 'text-foreground')}>Hello</div>;
 }
 ```
 
+Add component wrappers in `src/components/` and export them from `src/index.ts` before importing them in your app.
+
 ## Current public API
 
-| Export                    | Description                                                    |
-| ------------------------- | -------------------------------------------------------------- |
-| `Button`                  | Design system button (variants: solid, secondary, ghost, link) |
-| `Input`                   | Input with label, hint, and error                              |
-| `Combobox`                | Single select with search, controlled/uncontrolled             |
-| `cn`                      | Tailwind class merge utility                                   |
-| `SizeType`, `VariantType` | Design tokens                                                  |
+| Export                    | Description                  |
+| ------------------------- | ---------------------------- |
+| `cn`                      | Tailwind class merge utility |
+| `SizeType`, `VariantType` | Design tokens                |
+
+No design system components exported yet — add wrappers in `src/components/`.
 
 ## Add a new component
 
@@ -241,7 +227,7 @@ Key improvements:
 
 - **Single namespace** — no parallel v1/v2
 - **Clear `ui/` vs `components/` split** — avoids duplicate primitives
-- **Standard controlled API** — Combobox supports `value` / `onValueChange`
+- **Standard controlled API** — form controls support `value` / `onChange` when added
 - **README + per-folder README** — layer rules documented
 - **No internal preset dependency** — standard shadcn CSS variables
 

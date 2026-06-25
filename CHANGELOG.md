@@ -6,10 +6,13 @@ Each PR should add a changeset via `npm run changeset`. On merge, the Release wo
 
 ## [Unreleased]
 
+### Removed
+
+- Reset `src/components/` — removed `Button`, `Input`, and `Combobox` wrappers to rebuild the design system from scratch
+
 ### Added
 
 - Three-layer architecture: `src/ui/`, `src/components/`, `preview/`
-- Public components: `Button`, `Input`, `Combobox`
 - Exported utility `cn` and design tokens `SizeType`, `VariantType`
 
 ## [0.1.0] - 2025-06-25
