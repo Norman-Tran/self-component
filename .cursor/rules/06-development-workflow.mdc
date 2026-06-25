@@ -1,0 +1,42 @@
+---
+description: Quy trình phát triển, commit, publish
+alwaysApply: true
+---
+
+# Development Workflow
+
+## Trước khi PR/commit
+
+1. `npm run build` — pass TypeScript
+2. `npm run dev` — kiểm tra visual trong preview
+3. Cập nhật `preview/App.tsx` nếu thêm/sửa API public
+4. Cập nhật `README.md` nếu đổi cách cài hoặc export
+
+## Thêm component mới (checklist)
+
+- [ ] `npm run ui:add` (nếu cần primitive)
+- [ ] Wrapper `src/components/<name>.tsx`
+- [ ] Export `src/index.ts`
+- [ ] Demo preview
+- [ ] Peer dep Radix mới (nếu có)
+
+## Publish consumer
+
+```bash
+npm install github:<user>/self-component#main
+# App: import 'self-component/styles.css'
+```
+
+## Anti-patterns (học từ 247-components-ui)
+
+| Tránh | Lý do |
+| --- | --- |
+| v1 + v2 song song | Duplicate maintenance |
+| File 1600+ dòng | Khó review, khó test |
+| Export shadcn raw + wrapped cùng lúc | API consumer rối |
+| Uncontrolled-only form controls | Khó tích hợp react-hook-form |
+
+## Git
+
+- Chỉ commit khi user yêu cầu
+- Không commit secrets, `.env`

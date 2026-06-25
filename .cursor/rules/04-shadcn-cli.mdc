@@ -1,0 +1,37 @@
+---
+description: Quy tắc shadcn CLI và components.json
+globs: components.json,src/ui/**/*
+alwaysApply: false
+---
+
+# shadcn CLI
+
+Config: `components.json` — style `new-york`, aliases:
+
+- `@/ui` → `src/ui`
+- `@/components` → `src/components`
+- `@/lib/utils` → `src/lib/utils`
+
+## Thêm component
+
+```bash
+npm run ui:add -- select
+npm run ui:add -- dialog checkbox
+```
+
+## Sau khi CLI chạy
+
+1. Review diff — CLI có thể ghi đè file đã customize
+2. Giữ `'use client'` và import path `@/`
+3. Không export primitive mới từ `src/index.ts` trừ khi có wrapper ở `components/`
+4. Thêm Radix package vào `peerDependencies` + `devDependencies` nếu mới
+
+## CSS & theme
+
+- Tokens toàn cục: `src/styles/globals.css` (`:root`, `@theme inline`)
+- Không phụ thuộc preset Tailwind nội bộ bên ngoài repo
+- Animation: `@plugin 'tailwindcss-animate'` trong globals.css
+
+## Fork, không auto-update
+
+Coi `src/ui/` là fork — update shadcn thủ công có chọn lọc, không blind merge.

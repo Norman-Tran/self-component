@@ -1,0 +1,39 @@
+---
+description: Quy tắc cho shadcn primitives trong src/ui/
+globs: src/ui/**/*
+alwaysApply: false
+---
+
+# UI Primitives (src/ui/)
+
+Thin Radix + Tailwind wrappers. Code sở hữu bởi repo — fork shadcn, không phải npm package.
+
+## Được phép
+
+- Styling qua `cn()` và CVA variants
+- Prop mở rộng nhỏ (ví dụ `fullWidth` trên PopoverContent)
+- `'use client'` khi dùng Radix hooks/state
+
+## Không được
+
+- Business logic, API calls, i18n strings nghiệp vụ
+- Label, hint, error message (thuộc `components/`)
+- Controlled state phức tạp (pagination, multi-select logic)
+- Import từ `@/components/`
+
+## Thêm primitive mới
+
+```bash
+npm run ui:add -- dialog
+```
+
+Sau CLI: kiểm tra import alias `@/lib/utils`, style `new-york`, không ghi đè custom đã có.
+
+## Ví dụ đúng
+
+```tsx
+// ui/popover.tsx — chỉ bọc Radix + className
+const PopoverContent = React.forwardRef(({ className, ...props }, ref) => (
+  <PopoverPrimitive.Content ref={ref} className={cn('z-50 ...', className)} {...props} />
+));
+```

@@ -1,0 +1,33 @@
+---
+description: Tổng quan self-component — luôn áp dụng khi làm việc trong repo
+alwaysApply: true
+---
+
+# self-component — Project Overview
+
+Personal React component library. Stack: React 19, TypeScript, Tailwind v4, shadcn/ui (owned source).
+
+## Mục tiêu
+
+- Publish qua GitHub, consumer import `self-component` + `self-component/styles.css`
+- Một namespace duy nhất — không duplicate v1/v2 như 247-components-ui
+
+## Cấu trúc bắt buộc
+
+| Folder | Vai trò | Export? |
+| --- | --- | --- |
+| `src/ui/` | shadcn primitives | Không |
+| `src/components/` | Design system API | Có, qua `src/index.ts` |
+| `src/lib/` | `cn()`, tokens | Chọn lọc |
+| `preview/` | Playground | Không |
+
+## Nguyên tắc diff
+
+- Minimize scope — sửa đúng layer, không lan sang file không liên quan
+- Match conventions hiện có trước khi thêm pattern mới
+- Mỗi component public: một file, named export, `displayName` nếu forwardRef
+
+## Consumer contract
+
+- Peer deps: React, Radix packages tương ứng, Tailwind, cmdk, lucide-react
+- CSS variables trong `src/styles/globals.css` — dùng semantic tokens (`primary`, `muted-foreground`)

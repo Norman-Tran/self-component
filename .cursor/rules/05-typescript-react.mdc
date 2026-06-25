@@ -1,0 +1,40 @@
+---
+description: TypeScript và React conventions
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript & React
+
+## Component style
+
+- Functional components + `React.forwardRef` khi cần ref
+- `displayName` cho mọi forwardRef
+- `'use client'` ở file dùng hooks/Radix client components
+
+## Types
+
+- Export props interface/type cùng component (`ButtonProps`, `ComboboxItem`)
+- Generic `<T>` khi item mở rộng (pattern MultipleCombobox)
+- Tránh `any` — dùng `unknown` + type guard
+
+## Imports
+
+```tsx
+// ✅ Alias @/
+import { cn } from '@/lib/utils';
+import { Button } from '@/ui/button';
+
+// ❌ Relative dài ../../..
+```
+
+## Styling
+
+- `cn()` cho mọi className merge
+- CVA cho variant sets lặp lại
+- Không inline style trừ dynamic values bất khả thi
+
+## Build
+
+- Library build: `tsconfig.build.json` (chỉ `src/`, không `preview/`)
+- Verify: `npm run build` sau thay đổi public API

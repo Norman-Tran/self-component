@@ -1,0 +1,38 @@
+---
+description: Quy tắc component public trong src/components/
+globs: src/components/**/*
+alwaysApply: false
+---
+
+# Design System Components
+
+API mà consumer dùng. Compose từ `ui/` + design tokens.
+
+## API bắt buộc cho form controls
+
+- Hỗ trợ **controlled** (`value` + `onChange`/`onValueChange`) và **uncontrolled** (`defaultValue`) khi phù hợp
+- `disabled`, `className`, `data-testid` (hoặc `data-testid`)
+- Form fields: `label`, `hint`, `error`, `errorMessage`, `required`
+
+## Variants
+
+- Dùng tokens từ `@/lib/tokens.ts` (`SizeType`, `VariantType`)
+- Map sang ui variants — không hardcode màu brand trực tiếp (`text-brand-500`)
+- Dùng semantic: `text-primary`, `text-muted-foreground`, `border-destructive`
+
+## Ví dụ Combobox
+
+```tsx
+// ✅ Controlled, đóng popup sau select, empty state rõ ràng
+<Combobox value={value} onValueChange={setValue} items={items} />
+
+// ❌ Chỉ useState nội bộ, không callback — không tái sử dụng trong form
+```
+
+## Export
+
+Mỗi file mới → thêm export type + component trong `src/index.ts`.
+
+## Một file một component
+
+Feature phức tạp: folder `components/feature/` với `index.ts` barrel nội bộ, export chính vẫn qua `src/index.ts`.

@@ -1,0 +1,38 @@
+---
+description: Quy tắc phân lớp ui vs components — tránh trộn trách nhiệm
+globs: src/**/*
+alwaysApply: false
+---
+
+# Architecture Layers
+
+## Luồng phụ thuộc (một chiều)
+
+```
+src/ui/  →  src/components/  →  src/index.ts
+```
+
+- `components/` **được** import từ `ui/`, `lib/`
+- `ui/` **không** import từ `components/`
+- `index.ts` **chỉ** re-export từ `components/` và `lib/` (utility công khai)
+
+## Pattern composite (Combobox, Dialog form...)
+
+```tsx
+// ✅ components/combobox.tsx
+import { Popover } from '@/ui/popover';
+import { Command } from '@/ui/command';
+import { Button } from '@/components/button';
+
+// ❌ Không đặt toàn bộ logic composite trong src/ui/command.tsx
+```
+
+## File lớn
+
+- Tách sub-component vào cùng folder feature (`components/date-picker/`)
+- Core shell + wrapper (theo pattern DatePicker của 247, nhưng tách file)
+
+## Preview
+
+- Demo mọi component public mới trong `preview/App.tsx`
+- Preview import qua `@/index`, không bypass export
