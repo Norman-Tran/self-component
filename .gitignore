@@ -48,7 +48,7 @@ ehthumbs.db
 # Cursor — giữ rules/skills trong repo, bỏ state local
 .cursor/*
 !.cursor/rules/
-!.cursor/rules/**
+!.cursor/rules/** 
 !.cursor/skills/
 !.cursor/skills/**
 !.cursor/AGENTS.md
