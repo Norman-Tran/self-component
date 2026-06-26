@@ -1,24 +1,26 @@
 ---
 name: component-scaffold
-description: Scaffold a new public component in self-component following the 3-layer architecture. Use when adding a new UI component, shadcn primitive, or composite like Combobox/DatePicker.
+description: Scaffold a new public component in self-component following 3-layer architecture and shadcn patterns. Use when adding a UI component, shadcn primitive, or composite like Combobox/DatePicker.
 ---
 
 # Component Scaffold (self-component)
 
+Use **shadcn-component-patterns** skill for CVA/compound rules.
+
 ## Workflow
 
-1. **Primitive needed?** Run from repo root:
+1. **Primitive needed?** From repo root:
 
    ```bash
    npm run ui:add -- <shadcn-name>
    ```
 
-   Skip if primitive already exists in `src/ui/`.
+   Skip if already in `src/ui/`.
 
-2. **Create wrapper** at `src/components/<name>.tsx`:
-   - Import from `@/ui/*` and `@/lib/*`
-   - Controlled + uncontrolled props where applicable
-   - `data-testid`, label/error for form controls
+2. **Create public API** in `src/components/`:
+   - Simple: `src/components/<name>.tsx`
+   - Composite: `src/components/<name>/` → `types.ts`, `*-variants.ts`, `<name>.tsx`, `index.ts`
+   - Import `@/ui/*`, `@/lib/*` only — never reverse import from `ui/`
 
 3. **Export** in `src/index.ts`:
 
@@ -27,21 +29,34 @@ description: Scaffold a new public component in self-component following the 3-l
    export type { MyComponentProps } from './components/my-component';
    ```
 
-4. **Demo** in `preview/App.tsx`.
+4. **Docs page** `preview/pages/components/<Name>Page.tsx`
 
-5. **Verify**:
-   ```bash
-   npm run build
+5. **Register** in `preview/config/navigation.ts`:
+
+   ```ts
+   export const componentDemos = [
+     { slug: 'my-component', title: 'My Component', Page: MyComponentPage },
+   ];
    ```
 
-## Layer rules
+6. **Changeset** if `src/` or public API changed: `npm run changeset`
 
-- `src/ui/` — Radix + styling only
-- `src/components/` — public API
-- Never export from `src/ui/` in `index.ts`
+7. **Verify**:
 
-## Reference implementations
+   ```bash
+   npm run build
+   npm run format:check
+   ```
 
-- Simple wrapper: `src/components/button.tsx`
-- Form field: `src/components/input.tsx`
-- Composite: `src/components/combobox.tsx`
+## Layers
+
+| Layer | Path | Export? |
+| --- | --- | --- |
+| Primitives | `src/ui/` | No |
+| Design system | `src/components/` | Yes via `index.ts` |
+| Preview | `preview/` | No |
+
+## Reference
+
+- Composite scaffold: `src/components/combobox/`
+- shadcn rules: `.cursor/rules/08-shadcn-patterns.mdc`

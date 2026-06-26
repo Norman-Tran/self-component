@@ -13,20 +13,21 @@ preview/         → Demo app, không publish.
 
 ## Quy trình thêm component
 
-1. `npm run ui:add -- <name>` → thêm primitive vào `src/ui/`
-2. Tạo wrapper `src/components/<name>.tsx`
-3. Export trong `src/index.ts`
-4. Demo trong `preview/App.tsx`
-5. `npm run build` verify types
+1. Đọc `.cursor/rules/08-shadcn-patterns.mdc` + skill `shadcn-component-patterns`
+2. `npm run ui:add -- <name>` → primitive vào `src/ui/` (nếu cần)
+3. Wrapper `src/components/<name>/` hoặc `<name>.tsx`
+4. Doc page `preview/pages/components/<Name>Page.tsx` + `navigation.ts`
+5. Export `src/index.ts` + `npm run changeset`
+6. `npm run build`
 
 ## Skills Cursor hữu ích
 
-| Skill             | Khi dùng                                |
-| ----------------- | --------------------------------------- |
-| `create-rule`     | Thêm/sửa quy tắc trong `.cursor/rules/` |
-| `create-skill`    | Tạo skill workflow riêng cho repo       |
-| `review-bugbot`   | Review diff trước khi merge             |
-| `review-security` | Review bảo mật khi có form/auth         |
+| Skill | Khi dùng |
+| --- | --- |
+| `component-scaffold` | Thêm component public end-to-end |
+| `shadcn-component-patterns` | CVA, compound components, shadcn anatomy |
+| `create-rule` | Thêm/sửa `.cursor/rules/` |
+| `review-bugbot` | Review diff trước merge |
 
 ## Scripts
 
