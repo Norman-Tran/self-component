@@ -1,5 +1,7 @@
 import type { ComponentType } from 'react';
 
+import { ComboboxPage } from '../pages/components/ComboboxPage';
+
 export type ComponentDemoEntry = {
   slug: string;
   title: string;
@@ -8,15 +10,10 @@ export type ComponentDemoEntry = {
 
 /**
  * Register component doc pages here as wrappers are completed.
- * Sidebar and routes are derived from this list.
- *
- * @example
- * import { ButtonPage } from '../pages/components/ButtonPage';
- * export const componentDemos = [
- *   { slug: 'button', title: 'Button', Page: ButtonPage },
- * ];
  */
-export const componentDemos: ComponentDemoEntry[] = [];
+export const componentDemos: ComponentDemoEntry[] = [
+  { slug: 'combobox', title: 'Combobox', Page: ComboboxPage },
+];
 
 export const componentNav = componentDemos.map(({ slug, title }) => ({
   title,
