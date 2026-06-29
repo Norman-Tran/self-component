@@ -22,12 +22,12 @@ preview/         → Demo app, không publish.
 
 ## Skills Cursor hữu ích
 
-| Skill | Khi dùng |
-| --- | --- |
-| `component-scaffold` | Thêm component public end-to-end |
+| Skill                       | Khi dùng                                 |
+| --------------------------- | ---------------------------------------- |
+| `component-scaffold`        | Thêm component public end-to-end         |
 | `shadcn-component-patterns` | CVA, compound components, shadcn anatomy |
-| `create-rule` | Thêm/sửa `.cursor/rules/` |
-| `review-bugbot` | Review diff trước merge |
+| `create-rule`               | Thêm/sửa `.cursor/rules/`                |
+| `review-bugbot`             | Review diff trước merge                  |
 
 ## Scripts
 

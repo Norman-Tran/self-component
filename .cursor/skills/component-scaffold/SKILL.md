@@ -50,11 +50,11 @@ Use **shadcn-component-patterns** skill for CVA/compound rules.
 
 ## Layers
 
-| Layer | Path | Export? |
-| --- | --- | --- |
-| Primitives | `src/ui/` | No |
+| Layer         | Path              | Export?            |
+| ------------- | ----------------- | ------------------ |
+| Primitives    | `src/ui/`         | No                 |
 | Design system | `src/components/` | Yes via `index.ts` |
-| Preview | `preview/` | No |
+| Preview       | `preview/`        | No                 |
 
 ## Reference
 
