@@ -1,0 +1,62 @@
+---
+description: shadcn/ui code organization, composition, CVA variants, and styling rules
+alwaysApply: false
+globs: src/ui/**/*,src/components/**/*
+---
+
+# shadcn/ui Patterns (self-component)
+
+Fork shadcn **open code** into `src/ui/`; public API in `src/components/`. Match shadcn conventions so CLI updates stay predictable.
+
+## File anatomy (every primitive)
+
+1. `'use client'` when Radix/cmdk/state is used
+2. `import { cn } from '@/lib/utils'`
+3. **CVA** for visual variants (`variant`, `size`) — export `*Variants` for reuse
+4. `React.forwardRef` + `displayName`
+5. Spread `...props` — never block native/Radix props
+6. `className` merged last via `cn(..., className)`
+7. `asChild` + `Slot` on interactive primitives when shadcn does
+
+## Styling rules
+
+- Semantic tokens only: `bg-primary`, `text-muted-foreground`, `border-input`
+- No hardcoded brand colors (`text-blue-600`)
+- Animation: `data-[state=open]:animate-in` classes from `tailwindcss-animate`
+- Focus: `focus-visible:ring-2 focus-visible:ring-ring`
+
+## Composition (compound components)
+
+Complex UI = multiple exports, not one mega-props object:
+
+```tsx
+// ✅ shadcn style
+<Popover><PopoverTrigger /><PopoverContent /></Popover>
+
+// ❌ avoid
+<Combobox mode="multi" showSearch showClear size="lg" ... />
+```
+
+Pattern blocks (Combobox, DatePicker) compose `ui/` primitives in `components/`.
+
+## Layer split (this repo)
+
+| shadcn `ui/` | self-component |
+| --- | --- |
+| Radix + Tailwind + CVA | `src/ui/` — same rules, **not exported** |
+| App-specific API | `src/components/` — label, error, controlled state |
+| Docs examples | `preview/pages/components/` |
+
+## Variants
+
+- Primitives: CVA in the same file as the component
+- Design system: map `SizeType` / product variants → ui CVA in `*-variants.ts` when file grows
+- `defaultVariants` required; export variant type via `VariantProps<typeof xVariants>`
+
+## Adding from registry
+
+```bash
+npm run ui:add -- <name>
+```
+
+Review diff, keep `@/` aliases, do not export new `ui/` files from `index.ts` without a `components/` wrapper.

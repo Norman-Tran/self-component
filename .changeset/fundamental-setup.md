@@ -2,6 +2,6 @@
 'self-component': minor
 ---
 
-Add initial public API: `Button`, `Input`, and `Combobox` components with three-layer architecture (`src/ui/`, `src/components/`).
+Establish three-layer architecture (`src/ui/`, `src/components/`, `preview/`) and project tooling (Changesets, Husky, Commitlint, CI workflows, branch policy).
 
-Includes git workflow tooling: Changesets, Husky, Commitlint, CI workflows, and branch policy enforcement.
+Export `cn` and design tokens. Design system component wrappers reset — rebuild wrappers in `src/components/` from scratch.
