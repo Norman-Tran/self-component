@@ -58,7 +58,9 @@ self-component/
 ## Requirements
 
 - Node.js 20+
-- npm or yarn
+- **npm** (this repo uses `package-lock.json`)
+
+> **Note:** Do not run `yarn check` — that is Yarn's lockfile verifier and does not apply here. Use `npm run check` before opening a PR.
 
 ## Clone and develop
 
@@ -77,6 +79,8 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | ------------------------------- | ------------------------------------- |
 | `npm run dev`                   | Run preview app                       |
 | `npm run build`                 | Build library to `dist/`              |
+| `npm run typecheck`             | TypeScript check (src + preview)      |
+| `npm run check`                 | typecheck + build + format:check (CI) |
 | `npm run build:clean`           | Remove `dist/` then rebuild           |
 | `npm run ui:add -- <name>`      | Add shadcn primitive to `src/ui/`     |
 | `npm run format`                | Format code with Prettier             |
