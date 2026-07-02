@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronRight } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
@@ -86,7 +86,12 @@ export function Combobox({
           className={cn(comboboxTriggerVariants({ size, variant }), triggerClassName, className)}
         >
           <span className="truncate">{selectedLabel ?? placeholder}</span>
-          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+          <ChevronRight
+            className={cn(
+              'ml-2 size-4 shrink-0 opacity-50 transition-transform duration-200 ease-in-out',
+              open && 'rotate-90',
+            )}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
