@@ -1,3 +1,4 @@
+import { useRegisterDocTocItem } from './doc-page-context';
 import type { PropDocRow, PropsTableProps } from './types';
 
 function PropTable({
@@ -55,11 +56,18 @@ function PropTable({
   );
 }
 
-export function PropsTable({ props, relatedTypes }: PropsTableProps) {
+export function PropsTable({
+  id = 'props',
+  title = 'Props',
+  props,
+  relatedTypes,
+}: PropsTableProps) {
+  useRegisterDocTocItem({ id, title, level: 2 });
+
   return (
-    <section className="space-y-6 rounded-xl border bg-card p-6">
+    <section id={id} className="scroll-mt-24 space-y-6 rounded-xl border bg-card p-6">
       <div className="space-y-1">
-        <h2 className="text-lg font-semibold">Props</h2>
+        <h2 className="text-lg font-semibold">{title}</h2>
         <p className="text-sm text-muted-foreground">
           Public API for this component. Types mirror exports from <code>src/index.ts</code>.
         </p>

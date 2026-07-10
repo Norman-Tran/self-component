@@ -19,10 +19,10 @@ src/ui/  →  src/components/  →  src/index.ts
 ## Pattern composite (Combobox, Dialog form...)
 
 ```tsx
-// ✅ components/combobox.tsx
+// ✅ components/combobox/combobox.tsx
 import { Popover } from '@/ui/popover';
 import { Command } from '@/ui/command';
-import { Button } from '@/components/button';
+import { Button } from '@/ui/button';
 
 // ❌ Không đặt toàn bộ logic composite trong src/ui/command.tsx
 ```
@@ -34,5 +34,6 @@ import { Button } from '@/components/button';
 
 ## Preview
 
-- Demo mọi component public mới trong `preview/App.tsx`
+- Doc page mỗi component public: `preview/pages/components/<Name>Page.tsx`
+- Shell: `preview/components/doc/` (TOC, Preview/Code, props table) — rule `09-preview-component-docs.mdc`
 - Preview import qua `@/index`, không bypass export

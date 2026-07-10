@@ -12,6 +12,107 @@ const cities = [
   { label: 'Can Tho', value: 'ct', disabled: true },
 ];
 
+const citiesCodeSnippet = `const cities = [
+  { label: 'Hanoi', value: 'hn', keywords: 'ha noi capital' },
+  { label: 'Da Nang', value: 'dn' },
+  { label: 'Ho Chi Minh City', value: 'hcm', keywords: 'sai gon' },
+];`;
+
+const controlledCode = `import { useState } from 'react';
+import { Combobox } from 'self-component';
+
+${citiesCodeSnippet}
+
+export function Example() {
+  const [value, setValue] = useState<string | undefined>('hn');
+
+  return (
+    <Combobox
+      items={cities}
+      value={value}
+      onValueChange={setValue}
+      placeholder="Select a city"
+    />
+  );
+}`;
+
+const reactHookFormCode = `import { useForm } from 'react-hook-form';
+import { ComboboxField } from 'self-component';
+
+${citiesCodeSnippet}
+
+type FormValues = { city: string | undefined };
+
+export function Example() {
+  const form = useForm<FormValues>({
+    defaultValues: { city: undefined },
+    mode: 'onBlur',
+  });
+
+  return (
+    <form onSubmit={form.handleSubmit(console.log)}>
+      <ComboboxField
+        control={form.control}
+        name="city"
+        label="City"
+        required
+        items={cities}
+        placeholder="Select a city"
+        rules={{ required: 'Please select a city' }}
+      />
+    </form>
+  );
+}`;
+
+const uncontrolledCode = `import { Combobox } from 'self-component';
+
+${citiesCodeSnippet}
+
+export function Example() {
+  return (
+    <Combobox
+      items={cities}
+      defaultValue="dn"
+      placeholder="Select a city"
+    />
+  );
+}`;
+
+const sizesCode = `import { Combobox } from 'self-component';
+
+${citiesCodeSnippet}
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-3">
+      <Combobox items={cities} size="sm" placeholder="Small (sm)" />
+      <Combobox items={cities} size="md" placeholder="Medium (md)" />
+      <Combobox items={cities} size="lg" placeholder="Large (lg)" />
+    </div>
+  );
+}`;
+
+const disabledCode = `import { Combobox } from 'self-component';
+
+${citiesCodeSnippet}
+
+export function Example() {
+  return <Combobox items={cities} disabled placeholder="Disabled" />;
+}`;
+
+const customCopyCode = `import { Combobox } from 'self-component';
+
+export function Example() {
+  return (
+    <Combobox
+      items={[{ label: 'Alpha', value: 'a' }]}
+      placeholder="Pick one"
+      searchPlaceholder="Filter options…"
+      emptyText="Nothing matched your search."
+    />
+  );
+}`;
+
 const comboboxProps: PropDocRow[] = [
   {
     name: 'items',
@@ -263,8 +364,10 @@ export function ComboboxPage() {
       }
     >
       <DocSection
+        id="controlled"
         title="Controlled"
         description="Pass value and onValueChange — typical for forms and react-hook-form."
+        code={controlledCode}
       >
         <div className="max-w-sm">
           <ControlledDemo />
@@ -272,6 +375,7 @@ export function ComboboxPage() {
       </DocSection>
 
       <DocSection
+        id="react-hook-form"
         title="React Hook Form"
         description={
           <>
@@ -280,20 +384,28 @@ export function ComboboxPage() {
             <code>react-hook-form</code>.
           </>
         }
+        code={reactHookFormCode}
       >
         <ReactHookFormDemo />
       </DocSection>
 
       <DocSection
+        id="uncontrolled"
         title="Uncontrolled"
         description="Use defaultValue without value for local state inside the component."
+        code={uncontrolledCode}
       >
         <div className="max-w-sm">
           <Combobox items={cities} defaultValue="dn" placeholder="Select a city" />
         </div>
       </DocSection>
 
-      <DocSection title="Sizes" description="size maps to CVA variants on the trigger.">
+      <DocSection
+        id="sizes"
+        title="Sizes"
+        description="size maps to CVA variants on the trigger."
+        code={sizesCode}
+      >
         <div className="flex max-w-sm flex-col gap-3">
           <Combobox items={cities} size="sm" placeholder="Small (sm)" />
           <Combobox items={cities} size="md" placeholder="Medium (md)" />
@@ -301,15 +413,22 @@ export function ComboboxPage() {
         </div>
       </DocSection>
 
-      <DocSection title="Disabled" description="Trigger cannot open the popover.">
+      <DocSection
+        id="disabled"
+        title="Disabled"
+        description="Trigger cannot open the popover."
+        code={disabledCode}
+      >
         <div className="max-w-sm">
           <Combobox items={cities} disabled placeholder="Disabled" />
         </div>
       </DocSection>
 
       <DocSection
+        id="custom-copy"
         title="Custom copy"
         description="Override placeholder, search, and empty-state text."
+        code={customCopyCode}
       >
         <div className="max-w-sm">
           <Combobox

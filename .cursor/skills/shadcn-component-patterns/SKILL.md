@@ -1,21 +1,40 @@
 ---
 name: shadcn-component-patterns
-description: Build or refactor components following shadcn/ui open-code patterns (CVA, compound components, cn, forwardRef). Use when implementing ui primitives, design system wrappers, or composites like Combobox.
+description: Build or refactor components following shadcn/ui open-code patterns (CVA, compound components, cn, forwardRef) and self-component form/doc conventions. Use when implementing ui primitives, design system wrappers, or composites like Combobox.
 ---
 
 # shadcn Component Patterns
 
-Read `.cursor/rules/08-shadcn-patterns.mdc` first. Use with `component-scaffold` skill for full workflow.
+Read `.cursor/rules/08-shadcn-patterns.mdc` and `03-design-system-components.mdc` first.  
+Doc pages: `09-preview-component-docs.mdc` + `component-scaffold` skill.
 
 ## Quick checklist
 
-- [ ] Primitive in `src/ui/` — Radix + `cn()` + CVA + `forwardRef`
-- [ ] Public wrapper in `src/components/` — controlled API, labels/errors if form field
-- [ ] Variants in CVA file; `defaultVariants` set
-- [ ] Compound exports for complex UI (not 20 boolean props)
-- [ ] Semantic Tailwind tokens only
-- [ ] Demo page + `preview/config/navigation.ts` entry
-- [ ] Export `src/index.ts` + `npm run changeset` if consumer API changed
+### Primitive (`src/ui/`)
+
+- [ ] `'use client'` when Radix/cmdk/state
+- [ ] `cn()` + CVA + `forwardRef` + `displayName`
+- [ ] Semantic tokens only; spread `...props`
+- [ ] Not exported from `src/index.ts`
+
+### Public wrapper (`src/components/`)
+
+- [ ] Controlled + uncontrolled value props
+- [ ] `forwardRef`, `onBlur`, `name`, `id`, `invalid`, `disabled`, `data-testid`
+- [ ] Variants in `*-variants.ts`; export `*Variants` + `VariantProps`
+- [ ] Compound composition from `ui/` (not mega boolean props)
+- [ ] Optional `*Field` for label/error/RHF (`react-hook-form` optional peer)
+
+### Preview docs
+
+- [ ] `DocSection` per variant with `id` + `code`
+- [ ] `PropsTable` at bottom
+- [ ] Registered in `preview/config/navigation.ts`
+
+### Release
+
+- [ ] Export `src/index.ts`
+- [ ] `npm run changeset` if consumer API changed
 
 ## CVA template
 
@@ -33,33 +52,15 @@ export const myVariants = cva('base-classes...', {
 export type MyVariantProps = VariantProps<typeof myVariants>;
 ```
 
-## Compound component template
+## Combobox reference (this repo)
 
-```tsx
-'use client';
-
-import * as React from 'react';
-import { cn } from '@/lib/utils';
-
-const Root = ({ className, ...props }: React.ComponentProps<'div'>) => (
-  <div className={cn(className)} {...props} />
-);
-
-const Part = React.forwardRef<HTMLButtonElement, React.ComponentProps<'button'>>(
-  ({ className, ...props }, ref) => (
-    <button ref={ref} className={cn('...', className)} {...props} />
-  ),
-);
-Part.displayName = 'MyComponentPart';
-
-export { Root, Part };
-```
-
-## Combobox in this repo
-
-- Primitives: `@/ui/popover`, `@/ui/command`, `@/ui/button`
-- Public: `src/components/combobox/` — variants in `combobox-variants.ts` (customize per design spec)
-- Pattern: Popover trigger + Command list (shadcn classic); extend when user defines variants
+| Layer      | Path                                                              |
+| ---------- | ----------------------------------------------------------------- |
+| Primitives | `@/ui/popover`, `@/ui/command`, `@/ui/button`, `@/ui/label`       |
+| Core       | `combobox.tsx` — Popover + Command, controlled hook, `forwardRef` |
+| Variants   | `combobox-variants.ts`                                            |
+| Field      | `combobox-field.tsx` — `useController`, label, errors             |
+| Docs       | `ComboboxPage.tsx` — sections + code snippets + props table       |
 
 ## shadcn registry updates
 
@@ -67,4 +68,4 @@ export { Root, Part };
 npm run ui:add -- <name>
 ```
 
-Diff review — merge styling, preserve custom CVA keys.
+Review diff; preserve custom CVA keys; do not export raw `ui/` without a wrapper.

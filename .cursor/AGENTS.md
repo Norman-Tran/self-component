@@ -6,19 +6,20 @@ Thư viện React component cá nhân trên shadcn/ui. Đọc file này trước
 
 ```
 src/ui/          → Primitives (shadcn/Radix). Nội bộ, không export trực tiếp.
-src/components/  → Design system. API public, controlled props, label/error.
+src/components/  → Design system. API public, controlled props, *Field (RHF), variants.
 src/index.ts     → Barrel export duy nhất ra ngoài.
-preview/         → Demo app, không publish.
+preview/         → Doc app: pages/components + components/doc shell (TOC, Preview/Code).
 ```
 
 ## Quy trình thêm component
 
-1. Đọc `.cursor/rules/08-shadcn-patterns.mdc` + skill `shadcn-component-patterns`
-2. `npm run ui:add -- <name>` → primitive vào `src/ui/` (nếu cần)
-3. Wrapper `src/components/<name>/` hoặc `<name>.tsx`
-4. Doc page `preview/pages/components/<Name>Page.tsx` + `navigation.ts`
-5. Export `src/index.ts` + `npm run changeset`
-6. `npm run build`
+1. Đọc `03-design-system-components.mdc`, `08-shadcn-patterns.mdc`, `09-preview-component-docs.mdc`
+2. Skill `component-scaffold` + `shadcn-component-patterns`
+3. `npm run ui:add -- <name>` → primitive vào `src/ui/` (nếu cần)
+4. Wrapper `src/components/<name>/` — form: forwardRef, controlled, optional `*-field.tsx`
+5. Doc page: `DocSection` (`id`, `code`) + `PropsTable` — mẫu `ComboboxPage.tsx`
+6. Export `src/index.ts` + `npm run changeset`
+7. `npm run check`
 
 ## Skills Cursor hữu ích
 
@@ -31,8 +32,8 @@ preview/         → Demo app, không publish.
 
 ## Scripts
 
+- `npm run check` — typecheck + build + format (trước PR)
 - `npm run dev` — preview
-- `npm run build` — build library → `dist/`
 - `npm run ui:add -- <name>` — shadcn CLI
 - `npm run changeset` — tạo changeset (trước PR ảnh hưởng consumer)
 
