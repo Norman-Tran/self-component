@@ -33,7 +33,8 @@ export function IntroductionPage() {
             Export from <code>src/index.ts</code>
           </li>
           <li>
-            Add a page in <code>preview/pages/components/</code>
+            Add a doc page in <code>preview/pages/components/</code> (compositions + props table —
+            see README there)
           </li>
           <li>
             Register in <code>preview/config/navigation.ts</code>

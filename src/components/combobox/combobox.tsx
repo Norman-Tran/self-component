@@ -23,14 +23,23 @@ export type ComboboxProps = {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string | undefined) => void;
+  onBlur?: React.FocusEventHandler<HTMLButtonElement>;
   placeholder?: string;
   searchPlaceholder?: string;
   emptyText?: string;
   disabled?: boolean;
+  invalid?: boolean;
   className?: string;
   triggerClassName?: string;
+  id?: string;
+  name?: string;
   'data-testid'?: string;
 } & ComboboxTriggerVariantProps;
+
+function normalizeValue(value: string | undefined | null) {
+  if (value === '' || value == null) return undefined;
+  return value;
+}
 
 function useControllableValue(
   value: string | undefined,
@@ -39,7 +48,7 @@ function useControllableValue(
 ) {
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
   const isControlled = value !== undefined;
-  const current = isControlled ? value : uncontrolled;
+  const current = isControlled ? normalizeValue(value) : uncontrolled;
 
   const setValue = (next: string | undefined) => {
     if (!isControlled) setUncontrolled(next);
@@ -49,22 +58,40 @@ function useControllableValue(
   return [current, setValue] as const;
 }
 
-export function Combobox({
-  items,
-  value,
-  defaultValue,
-  onValueChange,
-  placeholder = 'Select an option',
-  searchPlaceholder = 'Search...',
-  emptyText = 'No results found.',
-  disabled = false,
-  className,
-  triggerClassName,
-  size,
-  variant,
-  'data-testid': dataTestId,
-}: ComboboxProps) {
+export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(function Combobox(
+  {
+    items,
+    value,
+    defaultValue,
+    onValueChange,
+    onBlur,
+    placeholder = 'Select an option',
+    searchPlaceholder = 'Search...',
+    emptyText = 'No results found.',
+    disabled = false,
+    invalid = false,
+    className,
+    triggerClassName,
+    id,
+    name,
+    size,
+    variant,
+    'data-testid': dataTestId,
+  },
+  ref,
+) {
   const [open, setOpen] = React.useState(false);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+  const setButtonRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      buttonRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
+
   const [selectedValue, setSelectedValue] = useControllableValue(
     value,
     defaultValue,
@@ -73,17 +100,32 @@ export function Combobox({
 
   const selectedLabel = items.find((item) => item.value === selectedValue)?.label;
 
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (!next) buttonRef.current?.blur();
+  };
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button
+          ref={setButtonRef}
           type="button"
           variant="outline"
           role="combobox"
+          id={id}
+          name={name}
           aria-expanded={open}
+          aria-invalid={invalid || undefined}
           disabled={disabled}
           data-testid={dataTestId}
-          className={cn(comboboxTriggerVariants({ size, variant }), triggerClassName, className)}
+          onBlur={onBlur}
+          className={cn(
+            comboboxTriggerVariants({ size, variant }),
+            invalid && 'border-destructive focus-visible:ring-destructive',
+            triggerClassName,
+            className,
+          )}
         >
           <span className="truncate">{selectedLabel ?? placeholder}</span>
           <ChevronRight
@@ -126,6 +168,6 @@ export function Combobox({
       </PopoverContent>
     </Popover>
   );
-}
+});
 
 Combobox.displayName = 'Combobox';
