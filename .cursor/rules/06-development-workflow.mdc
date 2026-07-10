@@ -7,18 +7,20 @@ alwaysApply: true
 
 ## Trước khi PR/commit
 
-1. `npm run build` — pass TypeScript
-2. `npm run dev` — kiểm tra visual trong preview
-3. Cập nhật `preview/App.tsx` nếu thêm/sửa API public
+1. `npm run check` — typecheck + build + format
+2. `npm run dev` — kiểm tra visual trong preview (TOC, Preview/Code tabs, hash links)
+3. Doc page đầy đủ nếu thêm/sửa API public — `preview/pages/components/`
 4. Cập nhật `README.md` nếu đổi cách cài hoặc export
 
 ## Thêm component mới (checklist)
 
 - [ ] `npm run ui:add` (nếu cần primitive)
-- [ ] Wrapper `src/components/<name>.tsx`
+- [ ] Wrapper `src/components/<name>/` hoặc `<name>.tsx` (form: forwardRef, controlled, optional `*Field`)
 - [ ] Export `src/index.ts`
-- [ ] Demo preview
-- [ ] Peer dep Radix mới (nếu có)
+- [ ] Doc page: `ComponentDocLayout` + `DocSection` (`id`, `code`) + `PropsTable`
+- [ ] Register `preview/config/navigation.ts`
+- [ ] Changeset (`npm run changeset`)
+- [ ] Peer dep Radix / RHF mới (nếu có)
 
 ## Publish consumer
 

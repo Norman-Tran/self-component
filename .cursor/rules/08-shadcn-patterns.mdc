@@ -44,8 +44,8 @@ Pattern blocks (Combobox, DatePicker) compose `ui/` primitives in `components/`.
 | shadcn `ui/` | self-component |
 | --- | --- |
 | Radix + Tailwind + CVA | `src/ui/` — same rules, **not exported** |
-| App-specific API | `src/components/` — label, error, controlled state |
-| Docs examples | `preview/pages/components/` |
+| App-specific API | `src/components/` — label, error, controlled state, `*Field` |
+| Docs examples | `preview/pages/components/` + `preview/components/doc/` |
 
 ## Variants
 

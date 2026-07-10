@@ -6,30 +6,78 @@ alwaysApply: false
 
 # Design System Components (`src/components/`)
 
-Consumer API. Compose from `ui/` + `@/lib/tokens`.
+Consumer API. Compose from `ui/` + `@/lib/tokens`. Reference implementation: `src/components/combobox/`.
 
-## Form controls
+## File layout
 
-- **Controlled** (`value` + `onChange` / `onValueChange`) and **uncontrolled** (`defaultValue`)
-- `disabled`, `className`, `data-testid`
-- Fields: `label`, `hint`, `error`, `errorMessage`, `required`
+| Shape | Path | When |
+| --- | --- | --- |
+| Simple | `src/components/<name>.tsx` | Single file, few props |
+| Composite | `src/components/<name>/` | Multiple files, variants, field wrapper |
+
+Composite folder (standard):
+
+```text
+components/<name>/
+├── types.ts              # Shared item/value types
+├── <name>-variants.ts    # CVA for product variants
+├── <name>.tsx            # Core public component
+├── <name>-field.tsx      # Optional: label + RHF (form controls only)
+└── index.ts              # Barrel — re-export public surface
+```
+
+## Form controls (required contract)
+
+Every input-like public component must support:
+
+| Concern | API |
+| --- | --- |
+| Controlled | `value` + `onValueChange` / `onChange` |
+| Uncontrolled | `defaultValue` |
+| Form libraries | `forwardRef`, `onBlur`, `name`, `id` |
+| Validation UI | `invalid` → `aria-invalid` + error border classes |
+| Testing | `data-testid` on the focusable surface |
+| Disabled | `disabled` |
+
+**Popover / pickers:** fire blur when the overlay closes (selection or dismiss) so `mode: 'onBlur'` works.
+
+Normalize empty form values: treat `''` and `null` like `undefined` for display when controlled.
+
+## Field wrapper (`*Field`)
+
+For components used in forms, add a sibling `*Field` (e.g. `ComboboxField`):
+
+- Layout: `label`, `hint`, `errorMessage`, `required`, `containerClassName`
+- Wire `id` + `htmlFor` via `@/ui/label`
+- **Manual mode:** pass `value` / `onValueChange` / `invalid` / `errorMessage` directly
+- **RHF mode:** pass `control` + `name` + optional `rules` → `useController` internally
+- `react-hook-form` is an **optional** peer dependency (`peerDependenciesMeta.optional`)
+
+Do **not** import RHF in the core component — only in `*-field.tsx`.
 
 ## Variants
 
-- Product variants in `*-variants.ts` with CVA; map `SizeType` from `@/lib/tokens` when shared
-- Map to `ui/` classes — no hardcoded brand colors
-- Follow shadcn: export `*Variants` + `VariantProps` for extension
+- Product variants in `*-variants.ts` with CVA
+- Map shared sizes to `SizeType` from `@/lib/tokens` when applicable
+- Export `*Variants` + `VariantProps` for extension
+- Map to semantic tokens — no hardcoded brand colors
 
-## Composite components (Combobox, DatePicker)
+## Composite components (Combobox, DatePicker, …)
 
 - Build from `ui/` primitives (Popover + Command, etc.)
-- Folder `components/<name>/` when multiple files: `types.ts`, `*-variants.ts`, main component, `index.ts`
-- Keep `ui/` free of composite logic
+- Keep `ui/` free of composite / product logic
+- Prefer shadcn **composition** over one mega-prop object
+- Controlled state hook colocated in main file when small (`useControllableValue`)
 
 ## Export
 
-Each public component → types + component in `src/index.ts`.
+Each public component → component + types (+ field + variants if exported) in `src/index.ts` only.
 
-## One component per public surface
+## Anti-patterns
 
-Large features: `components/<feature>/` with internal barrel; main export still via `src/index.ts`.
+| Avoid | Prefer |
+| --- | --- |
+| Uncontrolled-only controls | Controlled + uncontrolled |
+| RHF inside core component | Separate `*Field` wrapper |
+| Business logic in `ui/` | Wrappers in `components/` |
+| Duplicate v1/v2 APIs | One namespace, extend variants |

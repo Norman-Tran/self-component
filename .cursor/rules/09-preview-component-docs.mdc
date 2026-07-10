@@ -1,0 +1,71 @@
+---
+description: Preview doc pages — layout, TOC, Preview/Code tabs, props table
+globs: preview/pages/components/**/*,preview/components/doc/**/*
+alwaysApply: false
+---
+
+# Preview Component Docs
+
+Doc pages live in `preview/pages/components/`. Shell components in `preview/components/doc/` (preview-only, not published).
+
+Reference: `preview/pages/components/ComboboxPage.tsx`.
+
+## Page structure (fixed order)
+
+1. `ComponentDocLayout` — title + description
+2. Multiple `DocSection` — one composition per variant (top → bottom)
+3. `PropsTable` — API reference at the bottom
+
+Right sidebar **table of contents** is automatic when sections register an `id`.
+
+## DocSection contract
+
+Each variant / composition:
+
+| Prop | Required | Purpose |
+| --- | --- | --- |
+| `id` | Recommended | URL hash + TOC (`react-hook-form` not auto-slug friendly) |
+| `title` | Yes | Section heading + TOC label |
+| `description` | Optional | Short usage note |
+| `code` | Recommended | Copyable snippet for Code tab |
+| `children` | Yes | Live demo (Preview tab) |
+
+URL examples:
+
+```text
+/components/combobox#controlled
+/components/combobox#props
+```
+
+If `id` is omitted, `slugifySectionTitle(title)` is used.
+
+## Preview / Code tabs
+
+- Pass `code` on `DocSection` → wraps children in `DocExample`
+- Code strings: valid TSX, import from `'self-component'`, include minimal setup (`items`, state)
+- Keep demo and snippet in sync when API changes
+- Snippets are **documentation**, not executed — may simplify vs live demo
+
+## Props table
+
+- Define `PropDocRow[]` next to the page component
+- Columns: Prop, Type, Default, Description, Notes
+- Use `relatedTypes` for nested types (`ComboboxItem`, `*Field` extras)
+- `PropsTable` defaults: `id="props"`, `title="Props"`
+
+## Recommended sections per component type
+
+**Form control:** Default → Controlled → Uncontrolled → RHF (`*Field`) → Sizes → Disabled → States (error) → Props
+
+**Display-only:** Default → Variants → Composition → Props
+
+## Checklist (new doc page)
+
+- [ ] `preview/pages/components/<Name>Page.tsx`
+- [ ] Register in `preview/config/navigation.ts`
+- [ ] Explicit `id` on every `DocSection`
+- [ ] `code` string per section
+- [ ] `PropsTable` + `relatedTypes` if needed
+- [ ] Visual check: TOC sticky, hash scroll, Copy works
+
+See `preview/pages/components/README.md` and `preview/components/doc/README.md`.

@@ -246,16 +246,14 @@ Template: `.github/pull_request_template.md`.
 **PR `feature/` / `fix/` → `dev`:**
 
 ```bash
-npm run build
-npm run format:check
+npm run check
 npm run changeset:status
 ```
 
 **PR `dev` → `main`:**
 
 ```bash
-npm run build
-npm run format:check
+npm run check
 npm run changeset:status:main
 ```
 
